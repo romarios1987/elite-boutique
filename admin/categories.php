@@ -2,6 +2,7 @@
 ob_start();
 require_once '../core/init.php';
 include 'includes/head.php';
+include 'includes/navigation.php';
 if (!is_logged_in()) {
     login_error_redirect();
 }

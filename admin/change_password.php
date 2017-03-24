@@ -21,6 +21,14 @@ $user_id = $user_data['id'];
 
 $errors = [];
 ?>
+<style>
+    body {
+        background-image: url("/images/login-bg.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+</style>
 <div id="login-form">
     <div>
         <?php if ($_POST) {
@@ -58,28 +66,28 @@ $errors = [];
 
         ?>
     </div>
-    <h2 class="text-center">Change password</h2>
+    <h2 class="text-center">Изменить пароль</h2>
     <hr>
     <form action="change_password.php" method="post">
         <div class="form-group">
-            <label for="old_password">Old Password:</label>
+            <label for="old_password">Старый пароль:</label>
             <input type="password" name="old_password" id="old_password" class="form-control"
                    value="<?= $old_password; ?>">
         </div>
         <div class="form-group">
-            <label for="password">New Password:</label>
+            <label for="password">Новый пароль:</label>
             <input type="password" name="password" id="password" class="form-control" value="<?= $password; ?>">
         </div>
         <div class="form-group">
-            <label for="confirm">Confirm New Password:</label>
+            <label for="confirm">Подтвердите новый пароль:</label>
             <input type="password" name="confirm" id="confirm" class="form-control" value="<?= $confirm; ?>">
         </div>
         <div class="form-group">
-            <a href="index.php" class="btn btn-default">Cancel</a>
-            <input type="submit" class="btn btn-primary" value="Login">
+            <a href="index.php" class="btn btn-default">Отмена</a>
+            <input type="submit" class="btn btn-primary" value="Вход">
         </div>
     </form>
-    <p class="text-right"><a href="../index.php">Visit Site</a></p>
+    <p class="text-right"><a href="../index.php">Посетить сайт</a></p>
 </div><!--#/login-form-->
 
 

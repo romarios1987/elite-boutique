@@ -1,6 +1,7 @@
 <?php
 require_once '../core/init.php';
 
+
 if (!is_logged_in()) {
     login_error_redirect();
 }
@@ -62,6 +63,7 @@ if (isset($_POST['add_submit'])) {
 }
 
 include 'includes/head.php';
+include 'includes/navigation.php';
 ?>
 
     <h2 class="text-center">Бренды</h2>

@@ -36,6 +36,7 @@ $res = $db->query($query);
                         </ul>
                     </li>
                 <?php endwhile; ?>
+                <li><a href="cart.php"><span class="glyphicon glyphicon-shopping-cart"></span>Корзина</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container -->

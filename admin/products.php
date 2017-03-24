@@ -2,6 +2,8 @@
 ob_start();
 require_once '../core/init.php';
 include 'includes/head.php';
+include 'includes/navigation.php';
+
 if (!is_logged_in()) {
     login_error_redirect();
 }
@@ -16,8 +18,10 @@ if (isset($_GET['add']) || isset($_GET['edit'])) {
     $parent = ((isset($_POST['parent']) && !empty($_POST['parent'])) ? sanitize($_POST['parent']) : '');
     $category = ((isset($_POST['child']) && !empty($_POST['child'])) ? sanitize($_POST['child']) : '');
     $price = ((isset($_POST['price']) && $_POST['price'] != '') ? sanitize($_POST['price']) : '');
+
     $list_price = ((isset($_POST['list_price']) && $_POST['list_price'] != '') ? sanitize($_POST['list_price']) : '');
     $description = ((isset($_POST['description']) && $_POST['description'] != '') ? sanitize($_POST['description']) : '');
+
     $sizes = ((isset($_POST['sizes']) && $_POST['sizes'] != '') ? sanitize($_POST['sizes']) : '');
     $sizes = rtrim($sizes, ',');
     $saved_img = '';
@@ -39,8 +43,8 @@ if (isset($_GET['add']) || isset($_GET['edit'])) {
         $parent_result = mysqli_fetch_assoc($parent_q);
         $parent = ((isset($_POST['parent']) && !empty($_POST['parent'])) ? sanitize($_POST['parent']) : $parent_result['parent']);
         $price = ((isset($_POST['price']) && !empty($_POST['price'])) ? sanitize($_POST['price']) : $product['price']);
-        $list_price = ((isset($_POST['list_price']) && !empty($_POST['list_price'])) ? sanitize($_POST['list_price']) : $product['list_price']);
-        $description = ((isset($_POST['description']) && !empty($_POST['description'])) ? sanitize($_POST['description']) : $product['description']);
+        $list_price = ((isset($_POST['list_price'])) ? sanitize($_POST['list_price']) : $product['list_price']);
+        $description = ((isset($_POST['description'])) ? sanitize($_POST['description']) : $product['description']);
         $sizes = ((isset($_POST['sizes']) && !empty($_POST['sizes'])) ? sanitize($_POST['sizes']) : $product['sizes']);
         $sizes = rtrim($sizes, ',');
         $saved_img = (($product['image'] != '') ? $product['image'] : '');
@@ -75,7 +79,7 @@ if (isset($_GET['add']) || isset($_GET['edit'])) {
             }
         }
 
-        if (!empty($_FILES)) {
+        if ($_FILES['photo']['name'] != '') {
             $photo = $_FILES['photo'];
             $name = $photo['name'];
             $name_array = explode('.', $name);
@@ -196,7 +200,7 @@ if (isset($_GET['add']) || isset($_GET['edit'])) {
             </textarea>
         </div>
         <div class="form-group pull-right">
-            <a href="products.php" class="btn btn-default">Cancel</a>
+            <a href="products.php" class="btn btn-default">Отмена</a>
             <input type="submit" class="btn btn-success"
                    value="<?= ((isset($_GET['edit'])) ? 'Редактировать ' : 'Добавить новый'); ?> продукт">
         </div>
@@ -231,7 +235,7 @@ if (isset($_GET['add']) || isset($_GET['edit'])) {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
                     <button type="button" class="btn btn-primary"
                             onclick="updateSizes();jQuery('#sizesModal').modal('toggle'); return false;">Сохранить
                         изменения

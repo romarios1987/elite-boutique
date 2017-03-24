@@ -17,12 +17,12 @@
             <ul class="nav navbar-nav">
                 <li><a href="brands.php">Бренды</a></li>
                 <li><a href="categories.php">Категории</a></li>
-                <li><a href="products.php">Продукты</a></li>
+                <li><a href="products.php">Товары</a></li>
                 <?php if (has_permission('admin')): ?>
                     <li><a href="users.php">Пользователи</a></li>
                 <?php endif; ?>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Hello <?= $user_data['first']; ?>! <span
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Привет <?= $user_data['first']; ?>! <span
                                 class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="change_password.php">Изменить пароль</a></li>

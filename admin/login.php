@@ -64,7 +64,7 @@ $errors = [];
 
         ?>
     </div>
-    <h2 class="text-center">Login</h2>
+    <h2 class="text-center">Авторизоваться</h2>
     <hr>
     <form action="login.php" method="post">
         <div class="form-group">
@@ -76,13 +76,14 @@ $errors = [];
             <input type="password" name="password" id="password" class="form-control" value="<?= $password; ?>">
         </div>
         <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="Login">
+            <input type="submit" class="btn btn-primary" value="Вход">
+            <p class="text-right"><a href="../index.php">Посетить сайт</a></p>
         </div>
     </form>
-    <p class="text-right"><a href="../index.php">Visit Site</a></p>
+
 </div><!--#/login-form-->
 
 
-<?php include 'includes/footer.php';
+<?php //include 'includes/footer.php';
 ob_end_flush();
 ?>

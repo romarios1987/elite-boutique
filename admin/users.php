@@ -14,7 +14,7 @@ if (!has_permission('admin')) {
 if (isset($_GET['delete'])) {
     $delete_id = sanitize($_GET['delete']);
     $db->query("DELETE FROM users WHERE id = '$delete_id'");
-    $_SESSION['success_flash'] = "User has been deleted";
+    $_SESSION['success_flash'] = 'Пользователь удален'; //"User has been deleted";
     header('Location: users.php');
 }
 if (isset($_GET['add'])) {
@@ -56,7 +56,7 @@ if (isset($_GET['add'])) {
             $errors[] = 'Your password do not match.';
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = 'You must enter a valid email.';
+            $errors[] = 'Вы должны ввести валидный адрес электронной почты'; //'You must enter a valid email.';
         }
 
         if (!empty($errors)) {
@@ -66,17 +66,17 @@ if (isset($_GET['add'])) {
             $hashed = password_hash($password, PASSWORD_DEFAULT);
 
             $db->query("INSERT INTO users (full_name,email,password,permissions) VALUES ('$name','$email','$hashed','$permissions')");
-            $_SESSION['success_flash'] = 'User has been added!';
+            $_SESSION['success_flash'] = 'Пользователь добавлен'; //'User has been added!';
             header('Location: users.php');
         }
     } //if ($_POST)
     ?>
 
-    <h2 class="text-center">Add A New User</h2>
+    <h2 class="text-center">Добавить нового пользователя</h2>
     <hr>
     <form action="users.php?add=1" method="post">
         <div class="form-group col-md-6">
-            <label for="name">Full Name:</label>
+            <label for="name">Полное имя:</label>
             <input type="text" name="name" id="name" class="form-control" value="<?= $name; ?>">
         </div>
         <div class="form-group col-md-6">
@@ -84,15 +84,15 @@ if (isset($_GET['add'])) {
             <input type="text" name="email" id="email" class="form-control" value="<?= $email; ?>">
         </div>
         <div class="form-group col-md-6">
-            <label for="password">Password:</label>
+            <label for="password">Пароль:</label>
             <input type="password" name="password" id="password" class="form-control" value="<?= $password; ?>">
         </div>
         <div class="form-group col-md-6">
-            <label for="confirm">Confirm Password:</label>
+            <label for="confirm">Подтвердите пароль:</label>
             <input type="password" name="confirm" id="confirm" class="form-control" value="<?= $confirm; ?>">
         </div>
         <div class="form-group col-md-6">
-            <label for="confirm">Permissions:</label>
+            <label for="confirm">Разрешения:</label>
             <select class="form-control" name="permissions" id="permissions">
                 <option value=""<?= (($permissions == '') ? ' selected' : ''); ?>></option>
                 <option value="editor"<?= (($permissions == 'editor') ? ' selected' : ''); ?>>Editor</option>
@@ -101,25 +101,25 @@ if (isset($_GET['add'])) {
             </select>
         </div>
         <div class="form-group col-md-6 text-right" style="margin-top: 25px;">
-            <a href="users.php" class="btn btn-default">Cancel</a>
-            <input type="submit" value="Add User" class="btn btn-primary">
+            <a href="users.php" class="btn btn-default">Отмена</a>
+            <input type="submit" value="Добавить пользователя" class="btn btn-primary">
         </div>
     </form>
 <?php } //(isset($_GET['add'])
 else {
     $user_query = $db->query("SELECT * FROM users ORDER BY full_name"); ?>
-    <h2 class="text-center">Users</h2>
-    <a href="users.php?add=1" class="btn btn-success pull-right" id="add-product-btn">Add New User</a>
+    <h2 class="text-center">Пользователи</h2>
+    <a href="users.php?add=1" class="btn btn-success pull-right" id="add-product-btn">Добавить нового пользователя</a>
     <div class="clearfix"></div>
     <hr>
     <table class="table table-bordered table-striped table-condensed">
         <thead>
         <th></th>
-        <th>Name</th>
+        <th>Имя</th>
         <th>Email</th>
-        <th>Join Date</th>
-        <th>Last Login</th>
-        <th>Permissions</th>
+        <th>Дате вступления</th><!--Join Date-->
+        <th>Последний Вход</th><!--Last Login-->
+        <th>Разрешения</th>
         </thead>
         <tbody>
         <?php while ($user = mysqli_fetch_assoc($user_query)): ?>

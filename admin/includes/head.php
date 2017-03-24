@@ -12,6 +12,6 @@
     <script src="/js/bootstrap.min.js"></script>
 </head>
 <body>
-<?php include 'navigation.php';?>
+<?php //include 'navigation.php';?>
 <div class="wrapper">
     <div class="content">

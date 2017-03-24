@@ -34,10 +34,13 @@ body {
 }
 .right-bar{
     height: 500px;
-    background: green;
 }
 
-
+/*This fixes it in version 3.2.0 padding-right: 17px;*/
+.modal-open .navbar-fixed-top,
+.modal-open .navbar-fixed-bottom {
+    padding-right: 17px;
+}
 
 
 
@@ -49,12 +52,20 @@ body {
     background-size: cover;
     background-position: top center;
 }
+#partial-headerWrapper{
+    max-height: 300px;
+    height: 100%;
+    background-image: url('/images/banner-melbourne-shopping.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top center;
 
-
-/*This fixes it in version 3.2.0 padding-right: 17px;*/
-.modal-open .navbar-fixed-top,
-.modal-open .navbar-fixed-bottom {
-    padding-right: 17px;
+}
+.text-success{
+    margin: 0;
+}
+#cart_widget td{
+    font-size: 12px;
 }
 /*#logotext{
     position: absolute;
@@ -68,7 +79,7 @@ body {
     margin-top: -90px;
 }*/
 
-/***headerpartial***/
+
 /*
 #partial-headerWrapper{
     position: relative;
@@ -82,7 +93,7 @@ body {
     background-position: top center;
     background-attachment: fixed;
 }
-
+/***headerpartial***
 #partial-logotext{
     position: absolute;
     width: 100%;
@@ -145,7 +156,7 @@ img.details{
 
 #login-form{
     width: 50%;
-    height: 60%;
+    height: auto;
     border: 2px solid black;
     box-shadow: 7px 7px 15px rgba(0, 0, 0, 0.6);
     margin: 7% auto;

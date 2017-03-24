@@ -2,7 +2,7 @@
 require_once 'core/init.php';
 include 'includes/head.php';
 include 'includes/navigation.php';
-include 'includes/headerpartial.php';
+include 'includes/header_partial.php';
 include 'includes/left_bar.php';
 
 
