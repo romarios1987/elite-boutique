@@ -9,7 +9,7 @@ $items = json_decode($res['items'], true);
 $updated_items = [];
 $domain = (($_SERVER['HTTP_HOST'] != 'localhost') ? '.' . $_SERVER['HTTP_HOST'] : false);
 
-if ($mode == 'removeone') {
+if ($mode == 'remove_one') {
     foreach ($items as $item) {
         if ($item['id'] == $edit_id && $item['size'] == $edit_size) {
             $item['quantity'] = $item['quantity'] - 1;
@@ -21,7 +21,7 @@ if ($mode == 'removeone') {
 }
 
 
-if ($mode == 'addone') {
+if ($mode == 'add_one') {
     foreach ($items as $item) {
         if ($item['id'] == $edit_id && $item['size'] == $edit_size) {
             $item['quantity'] = $item['quantity'] + 1;
@@ -30,11 +30,10 @@ if ($mode == 'addone') {
     }
 }
 
-
 if (!empty($updated_items)) {
     $json_updated = json_encode($updated_items);
     $db->query("UPDATE cart SET items = '{$json_updated}' WHERE id = '{$cart_id}'");
-    $_SESSION['success_flash'] = 'Your shopping cart has been updated!';
+    $_SESSION['success_flash'] = 'Ваша корзина обновлена'; //'Your shopping cart has been updated!';
 }
 if (empty($updated_items)) {
     $db->query("DELETE FROM cart WHERE id = '{$cart_id}'");
