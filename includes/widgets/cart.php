@@ -17,7 +17,7 @@
                 ?>
                 <tr>
                     <td><?= $item['quantity']; ?></td>
-                    <td><?= substr($product['title'], 0, 30); ?></td>
+                    <td><?= $product['title']; ?></td>
                     <td><?= money($item['quantity'] * $product['price']); ?></td>
                 </tr>
                 <?php
@@ -26,7 +26,7 @@
             endforeach; ?>
             <tr>
                 <td></td>
-                <td>Общая сумма</td>
+                <td><b>Общая сумма</b></td>
                 <td><?= money($sub_total); ?></td>
             </tr>
             </tbody>

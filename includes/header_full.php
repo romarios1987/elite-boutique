@@ -1,9 +1,5 @@
-<!--Header-->
-<div id="headerWrapper">
+<div id="headerWrapper"></div>
+<div class="container-fluid">
+    <div class="row">
 
-</div>
-
-<div class="wrapper">
-    <div class="content">
-        <div class="row">
 

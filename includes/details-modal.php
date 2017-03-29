@@ -32,11 +32,14 @@ $size_array = explode(',', $size_string);
                     <div class="container-fluid">
                         <div class="row">
                             <span id="modal_errors" class="bg-danger"></span>
-                            <div class="col-sm-6">
-                                <div class="center-block">
-                                    <img src="<?= $product['image']; ?>" alt="<?= $product['title']; ?>"
-                                         class="details img-responsive">
-                                </div>
+                            <div class="col-sm-6 fotorama">
+                                <?php $photos = explode(',', $product['image']);
+                                foreach ($photos as $photo): ?>
+                                    <div class="center-block">
+                                        <img src="<?= $photo; ?>" alt="<?= $product['title']; ?>"
+                                             class="details img-responsive">
+                                    </div>
+                                <?php endforeach; ?>
                             </div>
                             <div class="col-sm-6">
                                 <h4>Описание товара</h4>
@@ -93,6 +96,14 @@ $size_array = explode(',', $size_string);
         $('#size').change(function () {
             var available = $('#size option:selected').data("available");
             $('#available').val(available);
+        });
+
+        /*fotorama*/
+        $(function () {
+            $('.fotorama').fotorama({
+                'loop' : true,
+                'autoplay': true
+            });
         });
 
 

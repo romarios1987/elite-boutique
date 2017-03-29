@@ -1,8 +1,6 @@
-</div>
-</div> <!--/.container-fluid  content-->
-<footer class="text-center" id="footer">&copy; Copyright <?= date('Y') ?> Elite Boutique</footer>
-
+</div><!--/.row-->
 </div><!--wrapper-->
+<footer class="text-center" id="footer">&copy; Copyright <?= date('Y') ?> Elite Boutique</footer>
 
 
 <script>

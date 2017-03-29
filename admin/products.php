@@ -31,9 +31,13 @@ if (isset($_GET['add']) || isset($_GET['edit'])) {
         $product_results = $db->query("SELECT * FROM products WHERE id = '$edit_id'");
         $product = mysqli_fetch_assoc($product_results);
         if (isset($_GET['delete_image'])) {
-            $image_url = $_SERVER['DOCUMENT_ROOT'] . $product['image'];
+            $img_inc = (int)$_GET['img_inc'] - 1;
+            $images = explode(',', $product['image']);
+            $image_url = $_SERVER['DOCUMENT_ROOT'] . $images[$img_inc];
             unlink($image_url);
-            $db->query("UPDATE products SET image = '' WHERE id = '$edit_id'");
+            unset($images[$img_inc]);
+            $image_string = implode(',', $images);
+            $db->query("UPDATE products SET image = '{$image_string}' WHERE id = '$edit_id'");
             header('Location: products.php?edit=' . $edit_id);
         }
         $category = ((isset($_POST['child']) && $_POST['child'] != '') ? sanitize($_POST['child']) : $product['categories']);
@@ -72,51 +76,60 @@ if (isset($_GET['add']) || isset($_GET['edit'])) {
 
         // Валидация
         $required = ['title', 'brand', 'price', 'parent', 'child', 'sizes'];
+        $allowed = ['png', 'jpg', 'jpeg', 'gif'];
+        $tmp_location = [];
+        $upload_path = [];
         foreach ($required as $field) {
             if ($_POST[$field] == '') {
                 $errors[] = 'Все поля обязательные для заполнения';
                 break;
             }
         }
+        $photo_count = count($_FILES['photo']['name']);
+        if ($photo_count > 0) {
+            for ($i = 0; $i < $photo_count; $i++) {
+                $name = $_FILES['photo']['name'][$i];
+                $name_array = explode('.', $name);
+                $file_name = $name_array[0];
+                $file_ext = $name_array[1];
+                $mime = explode('/', $_FILES['photo']['type'][$i]);
+                $mime_type = $mime[0];
+                $mime_ext = $mime[1];
+                $tmp_location[] = $_FILES['photo']['tmp_name'][$i];
+                $file_size = $_FILES['photo']['size'][$i];
+                $upload_name = md5(microtime()) . '.' . $file_ext;
+                $upload_path[] = BASE_URL . '/images/products/' . $upload_name;
+                if ($i != 0) {
+                    $db_path .= ',';
+                }
+                $db_path .= '/images/products/' . $upload_name;
 
-        if ($_FILES['photo']['name'] != '') {
-            $photo = $_FILES['photo'];
-            $name = $photo['name'];
-            $name_array = explode('.', $name);
-            $file_name = $name_array[0];
-            $file_ext = $name_array[1];
-            $mime = explode('/', $photo['type']);
-            $mime_type = $mime[0];
-            $mime_ext = $mime[1];
-            $tmp_loc = $photo['tmp_name'];
-            $file_size = $photo['size'];
-            $allowed = ['png', 'jpg', 'jpeg', 'gif'];
-            $upload_name = md5(microtime()) . '.' . $file_ext;
-            $upload_path = BASE_URL . '/images/products/' . $upload_name;
-            $db_path = '/images/products/' . $upload_name;
-            if ($mime_type != 'image') {
-                $errors[] = "Файл должен быть изображение";
-            }
-            if (!in_array($file_ext, $allowed)) {
-                $errors[] = 'Расширение файла должно быть PNG, JPG, JPEG или GIF.';
-            }
-            if ($file_size > 15000000) {
-                $errors[] = 'Размер файла не должен превышать 15MB.';
-            }
-            if ($file_ext != $mime_ext && ($mime_ext == 'jpeg' && $file_ext != 'jpg')) {
-                $errors[] = 'Расширение файла не соответствует файл';
-            }
 
-        }///if (!empty($_FILES))
+                if ($mime_type != 'image') {
+                    $errors[] = "Файл должен быть изображение";
+                }
+                if (!in_array($file_ext, $allowed)) {
+                    $errors[] = 'Расширение файла должно быть PNG, JPG, JPEG или GIF.';
+                }
+                if ($file_size > 15000000) {
+                    $errors[] = 'Размер файла не должен превышать 15MB.';
+                }
+                if ($file_ext != $mime_ext && ($mime_ext == 'jpeg' && $file_ext != 'jpg')) {
+                    $errors[] = 'Расширение файла не соответствует файл';
+                }
+
+            } //for
+        }///if ($_FILES['photo']['name']
 
         if (!empty($errors)) {
             echo display_errors($errors);
         } else {
             // загрузить файл вставки в базу данных
-            if (!empty($_FILES)) {
-                move_uploaded_file($tmp_loc, $upload_path);
+            if ($photo_count > 0) {
+                for ($i = 0; $i < $photo_count; $i++) {
+                    move_uploaded_file($tmp_location[$i], $upload_path[$i]);
+                }
             }
-
             $insert_sql = "INSERT INTO products (title, price, list_price, brand, categories, sizes, description, image) 
                           VALUES ('$title', '$price', '$list_price', '$brand', '$category', '$sizes', '$description', '$db_path')";
             if (isset($_GET['edit'])) {
@@ -185,12 +198,18 @@ if (isset($_GET['add']) || isset($_GET['edit'])) {
         </div>
         <div class="form-group col-md-6">
             <?php if ($saved_img != ''): ?>
-                <div class="saved-image"><img src="<?= $saved_img ?>" alt="savad image"><br>
-                    <a href="products.php?delete_image=1&edit=<?= $edit_id; ?>" class="text-danger">Удалить фото</a>
-                </div>
+                <?php $img_inc = 1;
+                $images = explode(',', $saved_img); ?>
+                <?php foreach ($images as $image): ?>
+                    <div class="saved-image col-md-4"><img src="<?=$image;?>" alt="saved image"><br>
+                        <a href="products.php?delete_image=1&edit=<?= $edit_id; ?>&img_inc=<?=$img_inc;?>" class="text-danger">Удалить фото</a>
+                    </div>
+                <?php
+                $img_inc++;
+                endforeach; ?>
             <?php else: ?>
                 <label for="photo">Фотография продукта:</label>
-                <input type="file" name="photo" id="photo" class="form-control">
+                <input type="file" name="photo[]" id="photo" class="form-control" multiple>
             <?php endif; ?>
         </div>
         <div class="form-group col-md-6">

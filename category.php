@@ -1,14 +1,14 @@
 <?php
 require_once 'core/init.php';
 include 'includes/head.php';
-include 'includes/navigation.php';
+/*include 'includes/navigation.php';*/
 include 'includes/header_partial.php';
 include 'includes/left_bar.php';
 
 
-if (isset($_GET['cat'])){
+if (isset($_GET['cat'])) {
     $cat_id = sanitize($_GET['cat']);
-}else{
+} else {
     $cat_id = '';
 }
 
@@ -18,18 +18,26 @@ $category = get_category($cat_id);
 
 ?>
     <!--Main Content-->
-    <div class="col-md-8">
+    <div class="col-md-8 col-sm-12">
         <div class="row">
-            <h2 class="text-center"><?=$category['parent']. ' '.$category['child'];?></h2>
-            <?php while ($product = mysqli_fetch_assoc($productQ)): ?>
-                <div class="col-md-3 text-center">
-                    <h4><?= $product['title'] ?></h4>
-                    <img src="<?= $product['image'] ?>" alt="<?= $product['title'] ?>" class="img-thumb">
-                    <p class="list-price text-danger">List Price: <s><?= $product['list_price'] ?></s></p>
-                    <p class="price">Our Price: <?= $product['price'] ?></p>
-                    <button type="button" class="btn btn-sm btn-success" onclick="detailsModal(<?=$product['id'];?>)">Details</button>
-                </div>
-            <?php endwhile; ?>
+            <div class="wrap-products clearfix">
+                <h2 class="text-center"
+                    style="margin-bottom: 20px;"><?='<span class="par_cat">' . $category['parent'] . '</span>' . ' ' . $category['child']; ?></h2>
+                <?php while ($product = mysqli_fetch_assoc($productQ)): ?>
+                    <div class="col-md-4 col-sm-4 col-xs-6">
+                        <div class="product-item">
+                            <h4><?= $product['title'] ?></h4>
+                            <?php $photos = explode(',', $product['image']); ?>
+                            <img src="<?= $photos[0] ?>" alt="<?= $product['title'] ?>" class="img-thumb">
+                            <p class="list-price text-danger">Старая цена: <s><?= $product['list_price'] ?></s> руб</p>
+                            <p class="price">Цена: <?= $product['price'] ?> руб</p>
+                            <button type="button" class="btn btn-sm btn-success"
+                                    onclick="detailsModal(<?= $product['id']; ?>)">Детали
+                            </button>
+                        </div>
+                    </div>
+                <?php endwhile; ?>
+            </div><!--wrap-products-->
         </div><!--row-->
     </div>
     <!--Main Content-->
